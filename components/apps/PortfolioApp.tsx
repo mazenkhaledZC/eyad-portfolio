@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type Platform = "instagram" | "tiktok" | "facebook";
 
@@ -156,6 +157,7 @@ export default function PortfolioApp() {
   const [selectedId, setSelectedId] = useState("enactus");
   const [index, setIndex] = useState(0);
   const iframeKey = useRef(0);
+  const isMobile = useIsMobile();
 
   const company = companies.find((c) => c.id === selectedId)!;
   const reels = company.reels;
@@ -174,6 +176,130 @@ export default function PortfolioApp() {
   const embedUrl = current ? getEmbedUrl(current) : null;
   const isExternal = current && !embedUrl;
 
+  // ── MOBILE LAYOUT ──────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <div style={{ color: "#fff", paddingBottom: 20 }}>
+        {/* Horizontal company chips */}
+        <div style={{
+          display: "flex", gap: 8, overflowX: "auto", padding: "14px 14px 10px",
+          WebkitOverflowScrolling: "touch", scrollbarWidth: "none",
+        }}>
+          {companies.map((c) => {
+            const active = selectedId === c.id;
+            return (
+              <button key={c.id} onClick={() => selectCompany(c.id)}
+                style={{
+                  flexShrink: 0, padding: "6px 14px", borderRadius: 20,
+                  border: `1px solid ${c.color}55`,
+                  background: active ? c.color : `${c.color}18`,
+                  color: active ? "#fff" : c.color,
+                  fontSize: 12, fontWeight: active ? 600 : 400,
+                  cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.2s",
+                }}
+              >{c.short}</button>
+            );
+          })}
+        </div>
+
+        {/* Company info */}
+        <div style={{ padding: "0 14px 12px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 3 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: company.color, boxShadow: `0 0 6px ${company.color}` }} />
+                <span style={{ fontSize: 13, fontWeight: 600 }}>{company.name}</span>
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 11, color: company.color }}>{company.handle}</span>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>{company.period}</span>
+              </div>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 5, lineHeight: 1.5 }}>
+                {company.description}
+              </p>
+            </div>
+            {company.pageUrl && (
+              <a href={company.pageUrl} target="_blank" rel="noopener noreferrer"
+                style={{
+                  display: "flex", alignItems: "center", gap: 4, flexShrink: 0,
+                  padding: "7px 12px", borderRadius: 18,
+                  border: `1px solid ${company.color}44`, background: `${company.color}12`,
+                  color: company.color, fontSize: 11, fontWeight: 600, textDecoration: "none",
+                }}>
+                <ExternalLink size={10} /> Page
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Video */}
+        {reels.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "40px 20px", color: "rgba(255,255,255,0.3)", fontSize: 13 }}>
+            <div style={{ fontSize: 36, marginBottom: 10 }}>📂</div>
+            Visit the page link to view this profile
+          </div>
+        ) : (
+          <div style={{ padding: "14px 14px 0" }}>
+            {/* Nav dots */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <button onClick={() => goTo(Math.max(0, index - 1))} disabled={index === 0}
+                style={{ background: "none", border: "none", cursor: index === 0 ? "not-allowed" : "pointer", color: index === 0 ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.7)", padding: 4 }}>
+                <ChevronLeft size={20} />
+              </button>
+              <div style={{ display: "flex", gap: 6 }}>
+                {reels.map((_, i) => (
+                  <button key={i} onClick={() => goTo(i)} style={{
+                    width: i === index ? 18 : 6, height: 6, padding: 0, borderRadius: 3,
+                    border: "none", cursor: "pointer",
+                    background: i === index ? company.color : "rgba(255,255,255,0.25)",
+                    transition: "all 0.25s",
+                  }} />
+                ))}
+              </div>
+              <button onClick={() => goTo(Math.min(reels.length - 1, index + 1))} disabled={index === reels.length - 1}
+                style={{ background: "none", border: "none", cursor: index === reels.length - 1 ? "not-allowed" : "pointer", color: index === reels.length - 1 ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.7)", padding: 4 }}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            {/* Video frame — full width 9:16 */}
+            <div style={{
+              width: "100%", aspectRatio: "9/16",
+              borderRadius: 16, overflow: "hidden",
+              border: `1.5px solid ${company.color}40`,
+              background: "#0a0a0f",
+              boxShadow: `0 8px 32px rgba(0,0,0,0.6), 0 0 0 0.5px ${company.color}20`,
+            }}>
+              {isExternal ? (
+                <ExternalCard reel={current} color={company.color} />
+              ) : (
+                <iframe
+                  key={`mobile-${current.id}-${iframeKey.current}`}
+                  src={embedUrl!}
+                  style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+                  scrolling="no"
+                  allowTransparency
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen"
+                />
+              )}
+            </div>
+
+            {/* Link */}
+            <a href={getDirectUrl(current)} target="_blank" rel="noopener noreferrer"
+              style={{
+                display: "flex", alignItems: "center", gap: 4, justifyContent: "center",
+                marginTop: 12, fontSize: 11, color: "rgba(255,255,255,0.35)", textDecoration: "none",
+              }}>
+              <ExternalLink size={10} />
+              {current.label} — Open on {current.type === "tiktok" ? "TikTok" : current.type === "facebook" ? "Facebook" : "Instagram"}
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── DESKTOP LAYOUT ─────────────────────────────────────────
   return (
     <div style={{ display: "flex", height: "100%", overflow: "hidden", color: "#fff" }}>
 

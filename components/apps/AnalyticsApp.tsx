@@ -1,6 +1,9 @@
 "use client";
 
+import { useIsMobile } from "@/hooks/useIsMobile";
+
 export default function AnalyticsApp() {
+  const isMobile = useIsMobile();
   return (
     <div style={{ padding: "24px 28px", color: "#fff" }}>
       <h2
@@ -42,7 +45,7 @@ export default function AnalyticsApp() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
           gap: 12,
           marginBottom: 20,
         }}

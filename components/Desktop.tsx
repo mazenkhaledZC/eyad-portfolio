@@ -11,6 +11,8 @@ import PortfolioApp from "./apps/PortfolioApp";
 import AnalyticsApp from "./apps/AnalyticsApp";
 import SkillsApp from "./apps/SkillsApp";
 import ContactApp from "./apps/ContactApp";
+import MobileLayout from "./MobileLayout";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const BootScreen = dynamic(() => import("./BootScreen"), { ssr: false });
 
@@ -53,6 +55,7 @@ let zCounter = 10;
 
 export default function Desktop() {
   const [booted, setBooted] = useState(false);
+  const isMobile = useIsMobile();
 
   const [windows, setWindows] = useState<WindowState[]>(
     initialApps.map((app, i) => ({
@@ -159,6 +162,15 @@ export default function Desktop() {
       case "contact":    return <ContactApp />;
     }
   };
+
+  if (isMobile) {
+    return (
+      <>
+        <MobileLayout />
+        {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      </>
+    );
+  }
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative", overflow: "hidden" }}>
