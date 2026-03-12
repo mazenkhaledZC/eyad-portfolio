@@ -37,7 +37,6 @@ const companies: Company[] = [
       { type: "post", id: "DRFdOnmDEsl", label: "Post" },
       { type: "reel", id: "DRVHdxeDeQG", label: "Reel #2" },
       { type: "reel", id: "DSA6R5BDpHu", label: "Reel #3" },
-      { type: "tiktok", id: "https://vt.tiktok.com/ZSuSt2Nv6/", label: "TikTok Viral" },
     ],
   },
   {
