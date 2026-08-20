@@ -51,6 +51,65 @@ const windowConfig: Record<AppId, {
 // Apps that start open (shown after boot)
 const DEFAULT_OPEN: AppId[] = ["about", "portfolio"];
 
+type Frame = { x: number; y: number; width: number; height: number };
+
+const MENU_BAR = 28;
+const DOCK_RESERVE = 100;
+const EDGE = 24;
+const GAP = 16;
+
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+/**
+ * Initial placement for every window, measured against the real viewport.
+ * The two default-open apps (About, Portfolio) are laid out side by side —
+ * About on the left, Portfolio on the right — so neither covers the other.
+ * Below ~900px wide there isn't room for two, so we fall back to the
+ * original cascade and let them overlap.
+ */
+function computeLayout(vw: number, vh: number): Record<AppId, Frame> {
+  const top = MENU_BAR + EDGE;
+  const maxH = Math.max(320, vh - top - DOCK_RESERVE);
+
+  const frames = {} as Record<AppId, Frame>;
+  for (const id of Object.keys(windowConfig) as AppId[]) {
+    const cfg = windowConfig[id];
+    frames[id] = {
+      x: cfg.x,
+      y: cfg.y + MENU_BAR,
+      width: Math.min(cfg.width, vw - 2 * EDGE),
+      height: Math.min(cfg.height, maxH),
+    };
+  }
+
+  const sideBySide = vw >= 900;
+  if (sideBySide) {
+    const available = vw - 2 * EDGE - GAP;
+    const aboutW = clamp(Math.round(available * 0.34), 340, 520);
+    const portfolioW = clamp(available - aboutW, 420, 980);
+
+    // Neither window grows past its natural size, so on a wide display the
+    // pair is centred as a group rather than flung to opposite edges.
+    const groupW = aboutW + GAP + portfolioW;
+    const startX = Math.max(EDGE, Math.round((vw - groupW) / 2));
+
+    frames.about = {
+      x: startX,
+      y: top,
+      width: aboutW,
+      height: Math.min(windowConfig.about.height, maxH),
+    };
+    frames.portfolio = {
+      x: startX + aboutW + GAP,
+      y: top,
+      width: portfolioW,
+      height: Math.min(windowConfig.portfolio.height, maxH),
+    };
+  }
+
+  return frames;
+}
+
 let zCounter = 10;
 
 export default function Desktop() {
@@ -72,6 +131,15 @@ export default function Desktop() {
       isOpen: DEFAULT_OPEN.includes(a.id),
     }))
   );
+
+  // Measure the viewport once on mount and place the windows to fit it.
+  // Windows read their position from props only on first render, so they
+  // stay unmounted until the layout exists — the boot screen covers the gap.
+  const [layout, setLayout] = useState<Record<AppId, Frame> | null>(null);
+
+  useEffect(() => {
+    setLayout(computeLayout(window.innerWidth, window.innerHeight));
+  }, []);
 
   // Stagger the default-open windows' z-indices so about is on top
   useEffect(() => {
@@ -197,8 +265,9 @@ export default function Desktop() {
       <MenuBar />
 
       {/* Windows */}
-      {windows.map((win) => {
+      {layout && windows.map((win) => {
         const cfg = windowConfig[win.id];
+        const frame = layout[win.id];
         return (
           <Window
             key={win.id}
@@ -208,10 +277,10 @@ export default function Desktop() {
             isOpen={win.isOpen}
             isMinimized={win.isMinimized}
             zIndex={win.zIndex}
-            defaultWidth={cfg.width}
-            defaultHeight={cfg.height}
-            defaultX={cfg.x}
-            defaultY={cfg.y + 28}
+            defaultWidth={frame.width}
+            defaultHeight={frame.height}
+            defaultX={frame.x}
+            defaultY={frame.y}
             onClose={handleClose}
             onMinimize={handleMinimize}
             onFocus={handleFocus}

@@ -27,6 +27,33 @@ interface Company {
 
 const companies: Company[] = [
   {
+    id: "bundesliga", name: "Bundesliga Arabic", short: "Bundesliga",
+    platform: "instagram", handle: "@bundesligaar",
+    pageUrl: "https://www.instagram.com/bundesligaar/",
+    period: "Jul – Aug 2026", color: "#e11d48",
+    description: "Social Media Editor Intern via Kijamii — 6M+ views on Bundesliga & FC Bayern Munich content, localized for Arabic audiences.",
+    reels: [
+      { type: "post", id: "DcOgjdsjQvY", label: "Kane's Golden Boot" },
+      { type: "reel", id: "DcOpHQJTmfC", label: "Bayern's Harry" },
+      { type: "reel", id: "Db3EQXgTC4U", label: "Neuer's Reflexes" },
+      { type: "reel", id: "DbnsMKiN33Q", label: "Grimaldo vs Crossbar" },
+      { type: "reel", id: "Dbm5gR9ByLM", label: "Bavarian Symphony" },
+      { type: "reel", id: "DbkwAk1Tbj9", label: "Kickoff Backfire" },
+      { type: "reel", id: "DbkoJnetvpi", label: "Stopping Kane" },
+      { type: "post", id: "DbTBX-1je6i", label: "Top Scorers" },
+    ],
+  },
+  {
+    id: "goalarabia", name: "Goal Arabia", short: "Goal Arabia",
+    platform: "instagram", handle: "@goalarabia",
+    pageUrl: "https://www.instagram.com/goalarabia/",
+    period: "Aug 2026", color: "#0ea5e9",
+    description: "Cross-page collaboration with Bundesliga Arabic — joint content published to Goal Arabia's audience.",
+    reels: [
+      { type: "post", id: "DcOgjdsjQvY", label: "Kane's Golden Boot (collab)" },
+    ],
+  },
+  {
     id: "enactus", name: "Enactus Cairo University", short: "Enactus",
     platform: "instagram", handle: "@enactuscairouniversity",
     pageUrl: "https://www.instagram.com/enactuscairouniversity?igsh=bjFlMnVwOHJzM2Qw",
@@ -153,7 +180,7 @@ function ExternalCard({ reel, color }: { reel: Reel; color: string }) {
 }
 
 export default function PortfolioApp() {
-  const [selectedId, setSelectedId] = useState("enactus");
+  const [selectedId, setSelectedId] = useState("bundesliga");
   const [index, setIndex] = useState(0);
   const iframeKey = useRef(0);
   const isMobile = useIsMobile();

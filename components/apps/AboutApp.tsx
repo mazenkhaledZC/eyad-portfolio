@@ -56,7 +56,7 @@ export default function AboutApp() {
               fontWeight: 400,
             }}
           >
-            Social Media Specialist & Marketing Expert
+            Social Media & Marketing Specialist
           </p>
           <div
             style={{
@@ -89,8 +89,9 @@ export default function AboutApp() {
         >
           Mass Communication student passionate about digital marketing, social media strategy,
           and brand communication. Experienced in managing targeted campaigns and using
-          data-driven insights to significantly boost engagement. Eager to contribute creative
-          and analytical skills to dynamic marketing teams.
+          data-driven insights to significantly boost engagement — most recently producing
+          content for Bundesliga and FC Bayern Munich, localized for Arabic audiences. Eager to
+          contribute creative and analytical skills to dynamic marketing teams.
         </p>
       </div>
 
@@ -101,8 +102,8 @@ export default function AboutApp() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
         {[
           { label: "Campaigns Managed", value: "10+" },
-          { label: "Views Generated", value: "1M+" },
-          { label: "Brands Worked With", value: "8+" },
+          { label: "Views Generated", value: "7M+" },
+          { label: "Brands Worked With", value: "10+" },
         ].map((stat) => (
           <div
             key={stat.label}
@@ -137,10 +138,10 @@ export default function AboutApp() {
         <GraduationCap size={18} color="rgba(255,255,255,0.5)" />
         <div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", fontWeight: 500 }}>
-            Mass Communication Student
+            Bachelor of Mass Communication
           </div>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>
-            Cairo University
+            Cairo University · 2023 – 2027
           </div>
         </div>
       </div>

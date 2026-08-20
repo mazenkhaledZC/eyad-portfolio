@@ -2,6 +2,18 @@
 
 const jobs = [
   {
+    role: "Social Media Editor Intern",
+    company: "Kijamii",
+    period: "Jul 2026 – Aug 2026",
+    color: "#ef4444",
+    bullets: [
+      "Generated 6M+ views through high-performing social media content for Bundesliga and FC Bayern Munich.",
+      "Localized and adapted global content campaigns for regional audiences, optimizing messaging, creative formats, and visuals for cultural relevance.",
+      "Collaborated with global content and creative teams to deliver platform-ready content while maintaining brand identity, tone of voice, and visual consistency.",
+      "Analyzed reach, engagement, and content performance metrics to identify successful formats and optimize future strategies.",
+    ],
+  },
+  {
     role: "Marketing Vice President",
     company: "Enactus Cairo University",
     period: "Oct 2025 – Present",
@@ -11,6 +23,19 @@ const jobs = [
       "Launched first major campaign achieving 700K+ views, significantly boosting brand awareness.",
       "Executed second campaign reaching 300K+ views, maintaining strong audience engagement.",
       "Conducted market research for 5 projects using innovative automation techniques.",
+    ],
+  },
+  {
+    role: "Marketing Specialist",
+    company: "El Motawakel",
+    period: "Mar 2026 – Jul 2026",
+    color: "#06b6d4",
+    bullets: [
+      "Conducted in-depth market research across Egypt and Saudi Arabia to identify opportunities, competitors, and customer behavior.",
+      "Developed and executed content strategies tailored for both B2B and B2C audiences.",
+      "Managed and optimized a Shopify store, improving user experience and supporting sales performance.",
+      "Created targeted marketing approaches for different market segments (industrial, commercial, end consumers).",
+      "Collaborated on brand positioning and messaging, and analyzed performance metrics to increase conversion rates.",
     ],
   },
   {
@@ -32,6 +57,8 @@ const jobs = [
     bullets: [
       "Analyzed budgets and performance metrics for 5 client accounts, identifying optimization opportunities.",
       "Monitored and evaluated campaign performance, providing strategic recommendations to improve ROI.",
+      "Produced platform-specific content aligned with brand voice and campaign objectives.",
+      "Supervised execution of marketing plans to ensure timely delivery and quality standards.",
       "Served as Social Media Team Leader for 2 mega events: Banking & Fintech Summit and Her Mark.",
     ],
   },

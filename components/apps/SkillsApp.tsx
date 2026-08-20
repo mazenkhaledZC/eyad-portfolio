@@ -27,7 +27,7 @@ const categoryColors: Record<string, string> = {
 
 const lines = [
   { text: "eyad@portfolio ~ % whoami", delay: 0 },
-  { text: "Eyad Ahmed — Social Media Specialist & Marketing Expert", delay: 300, indent: true },
+  { text: "Eyad Ahmed — Social Media & Marketing Specialist", delay: 300, indent: true },
   { text: "", delay: 400 },
   { text: "eyad@portfolio ~ % skills --list", delay: 700 },
   { text: "Loading skill set...", delay: 1000, dim: true },
