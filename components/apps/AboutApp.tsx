@@ -102,8 +102,8 @@ export default function AboutApp() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
         {[
           { label: "Campaigns Managed", value: "10+" },
-          { label: "Views Generated", value: "7M+" },
-          { label: "Brands Worked With", value: "10+" },
+          { label: "Views Generated", value: "10M+" },
+          { label: "Brands Worked With", value: "15+" },
         ].map((stat) => (
           <div
             key={stat.label}
